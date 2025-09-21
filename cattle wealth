@@ -1,0 +1,46 @@
+.data
+prompt:   .asciz "How many cattle do you have?\n"
+smallMsg: .asciz "Not enough for mahali\n"
+biggerMsg:.asciz "Small herd\n"
+biggestMsg:.asciz "Wealthy\n"
+
+.text
+.globl _start
+_start:
+    # Print prompt
+    la a0, prompt
+    li a7, 4
+    ecall
+
+    # Read integer input
+    li a7, 5
+    ecall
+    mv t0, a0       # Store input in t0
+
+    # Compare and branch
+    li t2, 50
+    li t3, 70
+    blt t0, t2, print_small
+    blt t0, t3, print_bigger
+    j print_biggest
+
+print_small:
+    la a0, smallMsg
+    li a7, 4
+    ecall
+    j exit
+
+print_bigger:
+    la a0, biggerMsg
+    li a7, 4
+    ecall
+    j exit
+
+print_biggest:
+    la a0, biggestMsg
+    li a7, 4
+    ecall
+
+exit:
+    li a7, 10
+    ecall
